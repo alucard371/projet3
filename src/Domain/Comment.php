@@ -40,6 +40,13 @@ class Comment
     private $article;
 
     /**
+     * depth of nested comment
+     *
+     * @var integer
+     */
+    private $depth = 0;
+
+    /**
      * @return string
      */
     public function getAuthor()
@@ -97,6 +104,22 @@ class Comment
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepth()
+    {
+        return $this->depth;
+    }
+
+    /**
+     * @param int $depth
+     */
+    public function setDepth(int $depth)
+    {
+        $this->depth = $depth;
     }
 
 

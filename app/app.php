@@ -59,13 +59,13 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     switch ($code) {
         case 403:
-            $message = 'Access denied.';
+            $message = 'Accés refusé.';
             break;
         case 404:
-            $message = 'The requested resource could not be found.';
+            $message = 'La ressource demandée est introuvable.';
             break;
         default:
-            $message = "Something went wrong.";
+            $message = "Quelque chose ne vas pas.";
     }
     return $app['twig']->render('error.html.twig', array('message' => $message));
 });

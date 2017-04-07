@@ -6,7 +6,10 @@
 {% block content %}
     <h2 class="text-center">{{ block('title') }}</h2>
     {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             {{ flashMessage }}
         </div>
     {% endfor %}
@@ -62,7 +65,7 @@
                     </table>
                 </div>
             {% else %}
-                <div class="alert alert-warning">Pas d'articles trouvés</div>
+                <div class="alert alert-warning"><p>Pas d'articles trouvés</p></div>
             {% endif %}
             <a href="{{ path('admin_article_add') }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajoutez un article</button></a>
         </div>
@@ -110,7 +113,7 @@
                     </table>
                 </div>
             {% else %}
-                <div class="alert alert-warning">Pas de commentaire trouvé.</div>
+                <div class="alert alert-warning"><p>Pas de commentaire trouvé.</p></div>
             {% endif %}
 
         </div>
@@ -147,7 +150,7 @@
                                                     <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Confirmez la suppression de l'utilisateur
+                                                    <p>Confirmez la suppression de l'utilisateur</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
@@ -162,7 +165,7 @@
                     </table>
                 </div>
             {% else %}
-                <div class="alert alert-warning">Pas d'utilisateur trouvé</div>
+                <div class="alert alert-warning"><p>Pas d'utilisateur trouvé</p></div>
             {% endif %}
             <a href="{{ path('admin_user_add') }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajoutez un utilisateur</button></a>
 

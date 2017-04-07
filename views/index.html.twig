@@ -3,17 +3,30 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-{% for article in articles %}
-<article>
-    <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-            <div class="caption">
-                <h2>{{ article.title }}</h2>
-                <p id="extrait">{{ article.content }}</p>
-                <button class="btn btn-default"><a  href="{{ path('article', {'id': article.id}) }}">Lire plus</a></button>
-            </div>
-        </div>
-    </div>
-</article>
-{% endfor %}
+
+
+    {% set count=0 %}
+    {% for article in articles %}
+            <article>
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h2>{{ article.title }}</h2>
+                            <p id="extrait">{{ article.content }}</p>
+                            {% for comment in comments if article.id == comment.article.id%}
+                            {% set count = count +1 %}
+                            {% else  %}
+                                {% set count = 0 %}
+                                <p>Pas de commentaires</p>
+                            {% endfor %}
+                            {% if count > 0 %}
+                            <p>nombre de commentaires: {{ count }}</p>
+                            {% endif %}
+                            <button class="btn btn-default"><a  href="{{ path('article', {'id': article.id}) }}">Lire plus</a></button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+    {% endfor %}
 {% endblock %}
