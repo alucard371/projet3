@@ -6,7 +6,7 @@
  * Time: 14:42
  */
 
-namespace microCMS\Domain;
+namespace MicroCMS\Domain;
 
 class Comment
 {
@@ -20,17 +20,9 @@ class Comment
     /**
      * Comment author
      *
-     * @var \microCMS\Domain\User
+     * @var \MicroCMS\Domain\User
      */
     private $author;
-
-
-    /**
-     * Comment content
-     *
-     * @var integer
-     */
-    private $content;
 
     /**
      * Associated article
@@ -40,11 +32,32 @@ class Comment
     private $article;
 
     /**
-     * depth of nested comment
+     * Comment content
      *
      * @var integer
      */
-    private $depth = 0;
+    private $content;
+
+    /**
+     * parent id for nested comments
+     *
+     * @var integer
+     */
+    private $parent_id;
+
+    /**
+     * @var integer
+     */
+    private $children;
+
+    /**
+     * moderation of comment
+     *
+     * @var boolean
+     */
+    private $publish;
+
+
 
     /**
      * @return string
@@ -75,7 +88,7 @@ class Comment
     }
 
     /**
-     * @return Article
+     * @return Article $article
      */
     public function getArticle()
     {
@@ -109,18 +122,43 @@ class Comment
     /**
      * @return int
      */
-    public function getDepth()
+    public function getParentId()
     {
-        return $this->depth;
+        return $this->parent_id;
     }
 
     /**
-     * @param int $depth
+     * @param int $id
+     * @internal param int $parent_id
      */
-    public function setDepth(int $depth)
+    public function setParentId(int $id)
     {
-        $this->depth = $depth;
+        $this->parent_id = $id;
     }
+
+    /**
+     * @return int
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param int $children
+     */
+    public function setChildren(int $children)
+    {
+        $this->children = $children;
+    }
+
+
+
+
+
+
+
+
 
 
 

@@ -14,14 +14,22 @@
                             <h2>{{ article.title }}</h2>
                             <p id="extrait">{{ article.content }}</p>
                             {% for comment in comments if article.id == comment.article.id%}
-                            {% set count = count +1 %}
+                                {% set count = count +1 %}
                             {% else  %}
                                 {% set count = 0 %}
                                 <p>Pas de commentaires</p>
                             {% endfor %}
                             {% if count > 0 %}
-                            <p>nombre de commentaires: {{ count }}</p>
+                                <p>nombre de commentaires: {{ count }}</p>
                             {% endif %}
+
+                            {% for comment in comments %}
+                                {% if article.id == comment.article.id %}
+
+                                {% else %}
+                                    {% set count = 0 %}
+                                {% endif %}
+                            {% endfor %}
                             <button class="btn btn-default"><a  href="{{ path('article', {'id': article.id}) }}">Lire plus</a></button>
                         </div>
                     </div>

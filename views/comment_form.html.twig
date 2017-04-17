@@ -13,9 +13,10 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
-    {% autoescape 'js'%}
+
     <div class="well">
-        {{ form_start(commentForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        {{ form_start(commentForm, { 'attr': {
+            'class': 'form-horizontal validator'} }) }}
         <div class="form-group">
             {{ form_label(commentForm.content, null, { 'label_attr':  {
                 'class': 'col-sm-4 control-label'
@@ -23,17 +24,18 @@
             <div class="col-sm-6">
                 {{ form_errors(commentForm.content) }}
                 {{ form_widget(commentForm.content, { 'attr':  {
-                    'class': 'form-control',
+                    'class': 'form-control reset',
                     'rows': '4'
                 }}) }}
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-3">
-                <input type="submit" class="btn btn-primary" value="Sauvegarder" />
+                <input type="submit"  class="btn btn-primary publish" value="Sauvegarder" />
+                <button onclick="reset();" type="button" class="btn btn-warning">Reset</button>
             </div>
         </div>
         {{ form_end(commentForm) }}
     </div>
-    {% endautoescape %}
+
 {% endblock %}

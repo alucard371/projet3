@@ -1,10 +1,10 @@
 <?php
 
-namespace microCMS\Controller;
+namespace MicroCMS\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use microCMS\Domain\Article;
+use MicroCMS\Domain\Article;
 
 class ApiController {
 

@@ -8,7 +8,14 @@
     <p>{{ article.content }}</p>
     <h3>Commentaires</h3>
     {% for comment in comments %}
-        <strong>{{ comment.author.username }}</strong> dit : {{ comment.content }}<br>
+        <button class="btn btn-default"><a  href="{{ path('comment', {'articleId': article.id, 'commentId': comment.id}) }}">{{ comment.author.username }}</a></button> dit : {{ comment.content }}<br>
+        <p class="divider"></p>
+        {{ form_start(checkboxForm) }}
+            {{ form_label(checkboxForm.content, 'checkbox') }}
+            {{ form_errors(checkboxForm.content) }}
+            {{ form_widget(checkboxForm.content) }}
+        {{ form_end(checkboxForm) }}
+
     {% else %}
         Pas de commentaires
     {% endfor %}
@@ -27,13 +34,14 @@
                 {{ form_errors(commentForm.content) }}
                 {{ form_widget(commentForm.content, { 'attr':  {
                     'rows': '4',
-                    'class': 'form-control textarea',
-                    'placeholder': 'Entrez votre commentaire'
+                    'class': 'form-control textarea reset',
                 }}) }}
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Publiez le commentaire" />
+                <button type="submit" class="btn btn-primary publish" value="Publiez le commentaire" >Publiez le commentaire</button>
+                <button onclick="reset();" type="button" class="btn btn-warning">Reset</button>
             </div>
+
             {{ form_end(commentForm) }}
         </div>
         {% for flashMessage in app.session.flashbag.get('success') %}

@@ -1,0 +1,59 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ comment.author.username }}{% endblock %}
+
+{% block content %}
+    <p>
+
+    <p>id de l'auteur de commentaire: {{ comment.author.id }}</p>
+    <p>login de l'auteur du commentaire: {{ comment.author.username }}</p>
+    <p>Mdp de l'auter : {{ comment.author.password }}</p>
+    <p>contenu du commentaire: {{ comment.content }}</p>
+    <p>id du commentaire: {{ comment.id }}</p>
+    <p>id de l'article lié au commentaire: {{ comment.article.id }}</p>
+
+
+
+
+
+
+    <h3>Commentaires</h3>
+
+
+    {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <br>
+    {% else %}
+        <br><button id="show" class="btn btn-default">Ajouter un commentaire</button>
+    {%  endif %}
+
+
+    {% if commentForm %}
+        <div id="commentForm">
+            {{ form_start(commentForm) }}
+            <div class="form-group">
+                {{ form_errors(commentForm.content) }}
+                {{ form_widget(commentForm.content, { 'attr':  {
+                    'rows': '4',
+                    'class': 'form-control textarea reset',
+                }}) }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary publish" value="Publiez le commentaire" >Publiez le commentaire</button>
+                <button onclick="reset();" type="button" class="btn btn-warning">Reset</button>
+            </div>
+
+            {{ form_end(commentForm) }}
+        </div>
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <a href="{{ path('login') }} ">Connectez-vous</a> pour ajouter un commentaire.
+    {% endif %}
+    </p>
+{% endblock %}

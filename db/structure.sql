@@ -21,7 +21,9 @@ create table t_comment (
     com_content varchar(500) not null,
     art_id integer not null,
     usr_id integer not null,
-    usr_depth INTEGER not null,
+    par_id INTEGER not NULL,
+    children INTEGER NOT NULL,
+    publish tinyint NOT NULL ,
     constraint fk_com_art foreign key(art_id) references t_article(art_id),
     constraint fk_com_usr foreign key(usr_id) references t_user(usr_id)
 ) engine=innodb character set utf8 collate utf8_unicode_ci;

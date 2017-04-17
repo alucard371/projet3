@@ -4,11 +4,11 @@ namespace microCMS\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use microCMS\Domain\Article;
-use microCMS\Domain\User;
-use microCMS\Form\Type\ArticleType;
-use microCMS\Form\Type\CommentType;
-use microCMS\Form\Type\UserType;
+use MicroCMS\Domain\Article;
+use MicroCMS\Domain\User;
+use MicroCMS\Form\Type\ArticleType;
+use MicroCMS\Form\Type\CommentType;
+use MicroCMS\Form\Type\UserType;
 
 class AdminController {
 
@@ -28,10 +28,13 @@ class AdminController {
     }
 
     /**
+     *
+     *
      * Add article controller.
      *
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addArticleAction(Request $request, Application $app) {
         $article = new Article();
@@ -40,6 +43,7 @@ class AdminController {
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
             $app['dao.article']->save($article);
             $app['session']->getFlashBag()->add('success', 'Article crée');
+            return $app->redirect('/admin');
 
         }
         return $app['twig']->render('article_form.html.twig', array(
@@ -53,6 +57,7 @@ class AdminController {
      * @param integer $id Article id
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editArticleAction($id, Request $request, Application $app) {
         $article = $app['dao.article']->find($id);
@@ -61,6 +66,7 @@ class AdminController {
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
             $app['dao.article']->save($article);
             $app['session']->getFlashBag()->add('success', 'Article mis à jour.');
+            return $app->redirect('/admin');
         }
         return $app['twig']->render('article_form.html.twig', array(
             'title' => 'Editez l\'article',
@@ -72,6 +78,7 @@ class AdminController {
      *
      * @param integer $id Article id
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteArticleAction($id, Application $app) {
         // Delete all associated comments
@@ -89,6 +96,7 @@ class AdminController {
      * @param integer $id Comment id
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editCommentAction($id, Request $request, Application $app) {
         $comment = $app['dao.comment']->find($id);
@@ -97,6 +105,7 @@ class AdminController {
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $app['dao.comment']->save($comment);
             $app['session']->getFlashBag()->add('success', 'Le commentaire à bien été mis à jour');
+            return $app->redirect('/admin');
         }
         return $app['twig']->render('comment_form.html.twig', array(
             'title' => 'Editez le commentaire',
@@ -108,6 +117,7 @@ class AdminController {
      *
      * @param integer $id Comment id
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteCommentAction($id, Application $app) {
         $app['dao.comment']->delete($id);
@@ -121,6 +131,7 @@ class AdminController {
      *
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addUserAction(Request $request, Application $app) {
         $user = new User();
@@ -138,6 +149,7 @@ class AdminController {
             $user->setPassword($password);
             $app['dao.user']->save($user);
             $app['session']->getFlashBag()->add('success', 'L\'utilisateur à bien été crée');
+            return $app->redirect('/admin');
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Nouvel utilisateur',
@@ -150,6 +162,7 @@ class AdminController {
      * @param integer $id User id
      * @param Request $request Incoming request
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editUserAction($id, Request $request, Application $app) {
         $user = $app['dao.user']->find($id);
@@ -164,6 +177,7 @@ class AdminController {
             $user->setPassword($password);
             $app['dao.user']->save($user);
             $app['session']->getFlashBag()->add('success', 'L\'utilisateur à bien été mis à jour');
+            return $app->redirect('/admin');
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Editez l\'utilisateur',
@@ -175,6 +189,7 @@ class AdminController {
      *
      * @param integer $id User id
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteUserAction($id, Application $app) {
         // Delete all associated comments

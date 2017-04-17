@@ -1,6 +1,6 @@
 <?php
 
-namespace microCMS\Domain;
+namespace MicroCMS\Domain;
 
 /**
  * Created by PhpStorm.

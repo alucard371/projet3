@@ -1,6 +1,7 @@
 <?php
 
-namespace microCMS\Form\Type;
+namespace MicroCMS\Form\Type;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -6,7 +6,7 @@
  * Time: 14:52
  */
 
-namespace microCMS\DAO;
+namespace MicroCMS\DAO;
 
 use Doctrine\DBAL\Connection;
 

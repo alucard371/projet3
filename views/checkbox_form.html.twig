@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% set adminMenu = true %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="well">
+    {{ form_start(checkboxForm) }}
+        <div class="form-group">
+            {{ form_label(checkboxForm.name, 'Modérer') }}
+            {{ form_errors(checkboxForm.content) }}
+            {{ form_widgetl(checkboxForm.content) }}
+        </div>
+    {{ form_end(checkboxForm) }}
+</div>
+{% endblock %}

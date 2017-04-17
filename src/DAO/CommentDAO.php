@@ -1,20 +1,30 @@
 <?php
 
-namespace microCMS\DAO;
+namespace MicroCMS\DAO;
 
-use microCMS\Domain\Comment;
+use MicroCMS\Domain\Comment;
 
 class CommentDAO extends DAO
 {
     /**
-     * @var \microCMS\DAO\ArticleDAO
+     * @var \MicroCMS\DAO\ArticleDAO
      */
     private $articleDAO;
 
     /**
-     * @var \microCMS\DAO\UserDAO
+     * @var \MicroCMS\DAO\UserDAO
      */
     private $userDAO;
+
+    /**
+     * @var \MicroCMS\DAO\CommentDAO
+     */
+    private $commentDAO;
+
+    public function setComment(CommentDAO $commentDAO)
+    {
+        $this->commentDAO = $commentDAO;
+    }
 
     public function setArticleDAO(ArticleDAO $articleDAO) {
         $this->articleDAO = $articleDAO;
@@ -52,6 +62,32 @@ class CommentDAO extends DAO
         return $comments;
     }
 
+
+    /**Return a list of all comments for a comment
+     * @param integer $commentId the comment id
+     * @return array
+     */
+    public function findAllByComment($commentId) {
+        // the associated comment is retrieved only once
+        $comment = $this->commentDAO->find($commentId);
+
+        // art_id is not selected by the SQL query
+        // The article won't be retrieved during domain objet construction
+        $sql = "select com_id, com_content from t_comment where com_id=? order by com_id";
+        $result = $this->getDb()->fetchAll($sql, array($commentId));
+
+        // Convert query result to an array of domain objects
+        $comments = array();
+        foreach ($result as $row) {
+            $comId = $row['com_id'];
+            $comment = $this->buildDomainObject($row);
+            // The associated comment is defined for the constructed comment
+            $comment->setComment($comment);
+            $comments[$comId] = $comment;
+        }
+        return $comments;
+    }
+
     /**
      * @return array a list of all comments
      */
@@ -71,7 +107,7 @@ class CommentDAO extends DAO
     }
 
     /**
-     * @param \microCMS\Domain\Comment
+     * @param \MicroCMS\Domain\Comment
      */
     public function save(Comment $comment) {
         $commentData = array(
@@ -91,12 +127,55 @@ class CommentDAO extends DAO
         }
     }
 
+    public function moderateComments(Comment $comment)
+    {
+
+        if ($comment->getPublish === 1) {
+            /*show*/
+
+        }
+        else
+        {
+            /*don't show*/
+
+        }
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function saveNestedComment(Comment $comment) {
+
+        if ($comment->getParentId() === null) {
+            $commentData = array(
+                'usr_id' => $comment->getAuthor()->getId(),
+                'art_id' => $comment->getArticle()->getId(),
+                'com_id' => $comment->getId(),
+                'com_content' => $comment->getContent()
+            );
+            // The comment has never been saved : insert it
+            $this->getDb()->insert('t_comment', $commentData);
+            // Get the id of the newly created comment and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $comment->setId($id);
+            $comment->setParentId($id);
+        } else {
+            $commentData = array(
+                'children' => $comment->getParentId(),
+                'art_id' => $comment->getArticle()->getId(),
+                'com_content' => $comment->getContent()
+            );
+            // The comment has already been saved : update it
+            $this->getDb()->update('t_comment', $commentData, array('com_id' => $comment->getId()));
+        }
+    }
+
     /**
      * Returns a comment matching the supplied id.
      *
      * @param integer $id The comment id
-     *
-     * @return \microCMS\Domain\Comment|throws an exception if no matching comment is found
+     * @return throws|Comment an exception if no matching comment is found
+     * @throws \Exception
      */
     public function find($id) {
         $sql = "select * from t_comment where com_id=?";
@@ -145,7 +224,7 @@ class CommentDAO extends DAO
      * Creates an Comment object based on a DB row.
      *
      * @param array $row The DB row containing Comment data.
-     * @return \microCMS\Domain\Comment
+     * @return \MicroCMS\Domain\Comment
      */
     protected function buildDomainObject(array $row) {
         $comment = new Comment();

@@ -34,7 +34,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => function () use ($app) {
-                return new microCMS\DAO\UserDAO($app['db']);
+                return new MicroCMS\DAO\UserDAO($app['db']);
             },
         ),
     ),
@@ -72,13 +72,13 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
 
 // Register services
 $app['dao.article'] = function ($app) {
-    return new microCMS\DAO\ArticleDAO($app['db']);
+    return new MicroCMS\DAO\ArticleDAO($app['db']);
 };
 $app['dao.user'] = function ($app) {
-    return new microCMS\DAO\UserDAO($app['db']);
+    return new MicroCMS\DAO\UserDAO($app['db']);
 };
 $app['dao.comment'] = function ($app) {
-    $commentDAO = new microCMS\DAO\CommentDAO($app['db']);
+    $commentDAO = new MicroCMS\DAO\CommentDAO($app['db']);
     $commentDAO->setArticleDAO($app['dao.article']);
     $commentDAO->setUserDAO($app['dao.user']);
     return $commentDAO;

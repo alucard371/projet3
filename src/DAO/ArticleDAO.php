@@ -1,8 +1,8 @@
 <?php
 
-namespace microCMS\DAO;
+namespace MicroCMS\DAO;
 
-use microCMS\Domain\Article;
+use MicroCMS\Domain\Article;
 
 
 /**
@@ -36,7 +36,7 @@ class ArticleDAO extends DAO
     /**
      * Saves an article into the database.
      *
-     * @param \microCMS\Domain\Article $article The article to save
+     * @param \MicroCMS\Domain\Article $article The article to save
      */
     public function save(Article $article) {
         $articleData = array(
@@ -71,7 +71,7 @@ class ArticleDAO extends DAO
      * Creates an Article object based on a DB row
      *
      * @param array $row The DB row containing Article data
-     * @return \microCMS\Domain\Article
+     * @return \MicroCMS\Domain\Article
      */
     protected function buildDomainObject(array $row)
     {
@@ -84,7 +84,7 @@ class ArticleDAO extends DAO
 
     /**
      * @param $id integer
-     * @return \microCMS\Domain\Article|an exception if no match article is found
+     * @return \MicroCMS\Domain\Article|an exception if no match article is found
      * @throws \Exception
      */
     public function find($id)
