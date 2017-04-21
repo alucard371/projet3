@@ -6,20 +6,43 @@
 <p>
     <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
-    <h3>Commentaires</h3>
-    {% for comment in comments %}
-        <button class="btn btn-default"><a  href="{{ path('comment', {'articleId': article.id, 'commentId': comment.id}) }}">{{ comment.author.username }}</a></button> dit : {{ comment.content }}<br>
-        <p class="divider"></p>
-        {{ form_start(checkboxForm) }}
-            {{ form_label(checkboxForm.content, 'checkbox') }}
-            {{ form_errors(checkboxForm.content) }}
-            {{ form_widget(checkboxForm.content) }}
-        {{ form_end(checkboxForm) }}
 
+
+
+    <h3>Commentaires</h3>
+    <div>
+    {% for comment in comments %}
+        {% if not comment.published %}
+        <div class="parent" id="{{ comment.id }}">
+            <button type="button" class="btn btn-warning " title="Moderate" data-toggle="modal" data-target="#moderateDialog{{ comment.id }}">Signaler</span>
+            </button>
+            <div class="modal fade" id="moderateDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                        </div>
+                        <div class="modal-body">
+                            Confirmez la demande de modération
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                            <a href="{{ path('moderation', { 'commentId': comment.id , 'articleId': article.id}) }}" class="btn btn-danger">Confirmer</a>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <button class="btn btn-default "><a  href="{{ path('comment', {'articleId': article.id, 'commentId': comment.id}) }}">{{ comment.author.username }}</a></button> dit : {{ comment.content }}
+            <br>
+
+            <p class="divider"></p>
+        </div>
+        {% endif %}
     {% else %}
         Pas de commentaires
     {% endfor %}
-
+    </div>
     {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <br>
     {% else %}

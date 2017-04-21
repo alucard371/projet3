@@ -19,11 +19,13 @@ class AdminController {
      */
     public function indexAction(Application $app) {
         $articles = $app['dao.article']->findAll();
-        $comments = $app['dao.comment']->findAll();
+        $approvedComments = $app['dao.comment']->findApprovedComments();
+        $moderateComments = $app['dao.comment']->findModerateComments();
         $users = $app['dao.user']->findAll();
         return $app['twig']->render('admin.html.twig', array(
             'articles' => $articles,
-            'comments' => $comments,
+            'approvedComments' => $approvedComments,
+            'moderations' => $moderateComments,
             'users' => $users));
     }
 
@@ -120,6 +122,9 @@ class AdminController {
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteCommentAction($id, Application $app) {
+        // Delete all associated comments
+        $app['dao.comment']->deleteAllByComment($id);
+        // Delete parent comment
         $app['dao.comment']->delete($id);
         $app['session']->getFlashBag()->add('success', 'Le commentaire à bien été supprimé');
         // Redirect to admin home page

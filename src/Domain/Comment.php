@@ -32,6 +32,13 @@ class Comment
     private $article;
 
     /**
+     * Associated comment id
+     *
+     * @var integer
+     */
+    private $parent;
+
+    /**
      * Comment content
      *
      * @var integer
@@ -39,25 +46,11 @@ class Comment
     private $content;
 
     /**
-     * parent id for nested comments
-     *
-     * @var integer
-     */
-    private $parent_id;
-
-    /**
-     * @var integer
-     */
-    private $children;
-
-    /**
      * moderation of comment
      *
      * @var boolean
      */
-    private $publish;
-
-
+    private $published;
 
     /**
      * @return string
@@ -120,48 +113,36 @@ class Comment
     }
 
     /**
+     * @return boolean
+     */
+    public function isPublished ()
+    {
+        return $this->published;
+    }
+
+    /**
+     * @param boolean $published
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+    }
+
+    /**
      * @return int
      */
-    public function getParentId()
+    public function getParent()
     {
-        return $this->parent_id;
+        return $this->parent;
     }
 
     /**
-     * @param int $id
-     * @internal param int $parent_id
+     * @param int $parent
      */
-    public function setParentId(int $id)
+    public function setParent($parent)
     {
-        $this->parent_id = $id;
+        $this->parent = $parent;
     }
-
-    /**
-     * @return int
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * @param int $children
-     */
-    public function setChildren(int $children)
-    {
-        $this->children = $children;
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

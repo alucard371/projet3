@@ -18,4 +18,4 @@ insert into t_user values
 insert into t_comment values
 (1, 'Great! Keep up the good work.', 1, 1, 0, 0, true);
 insert into t_comment values
-(2, "Thank you, I'll try my best.", 1, 2, 0, 0, true);
+(2, 'Thank you, Ill try my best.', 1, 2, 0, 0, true);

@@ -17,7 +17,8 @@
         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
             <ul class="nav nav-tabs nav-justified">
                 <li class="active"><a href="#articles" data-toggle="tab">Articles</a></li>
-                <li><a href="#comments" data-toggle="tab">Commentaires</a></li>
+                <li><a href="#moderateComments" data-toggle="tab">En attente</a></li>
+                <li><a href="#approvedComments" data-toggle="tab">Acceptés</a></li>
                 <li><a href="#users" data-toggle="tab">Utilisateurs</a></li>
             </ul>
         </div>
@@ -69,45 +70,126 @@
             {% endif %}
             <a href="{{ path('admin_article_add') }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Ajoutez un article</button></a>
         </div>
-        <div class="tab-pane fade adminTable" id="comments">
-            {% if comments %}
+        <div class="tab-pane fade adminTable" id="moderateComments">
+            {% if moderations %}
                 <div class="table-responsive">
                     <table class="table table-hover table-condensed">
                         <thead>
                         <tr>
+                            <th>Identifiant</th>
                             <th>Article</th>
                             <th>Auteur</th>
                             <th>Contenu</th>
                             <th></th>  <!-- Actions column -->
                         </tr>
                         </thead>
-                        {% for comment in comments %}
-                            <tr>
-                                <td><a class="articleTitle" href="{{ path('article', { 'id': comment.article.id }) }}">{{ comment.article.title }}</a></td>
-                                <td>{{ comment.author.username }}</td>
-                                <td>{{ comment.content | truncate(60) }}</td>
+                        {% for moderation in moderations %}
+                            {% if moderation.published == 1%}
+                                <tr class="success" id="tr{{ moderation.id }}">
+                            {% else %}
+                                <tr id="tr{{ moderation.id }}">
+                            {% endif %}
+
+                                <td>{{ moderation.id }}</td>
+                                <td><a class="articleTitle" href="{{ path('article', { 'id': moderation.article.id }) }}">{{ moderation.article.title }}</a></td>
+                                <td>{{ moderation.author.username }}</td>
+                                <td>{{ moderation.content | truncate(60) }}</td>
                                 <td>
-                                    <a href="{{ path('admin_comment_edit', { 'id': comment.id }) }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
-                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#commentDialog{{ comment.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                    <a href="{{ path('admin_comment_edit', { 'id': moderation.id }) }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#commentModerationDialog{{ moderation.id }}"><span class="glyphicon glyphicon-remove"></span>
                                     </button>
-                                    <div class="modal fade" id="commentDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="commentModertionDialog{{ moderation.id }}" tabindex="-1" role="dialog" aria-labelledby="myModerateModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                                    <h4 class="modal-title" id="myModerateModalLabel">Confirmation</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     Confirmez la suppression du commentaire
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                    <a href="{{ path('admin_comment_delete', { 'id': comment.id }) }}" class="btn btn-danger">Confirmer</a>
+                                                    <a href="{{ path('admin_comment_delete', { 'id': moderation.id }) }}" class="btn btn-danger">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    <button type="button" class="btn btn-warning btn-xs" title="Accept" data-toggle="modal" data-target="#acceptModerateDialog{{ moderation.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <div class="modal fade" id="acceptModerateDialog{{ moderation.id }}" tabindex="-1" role="dialog" aria-labelledby="accept" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="accept">Confirmation</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Acceptez le commentaire
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="{{ path('accept', { 'commentId': moderation.id }) }}" class="btn btn-warning">Confirmer</a>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
                                 </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning"><p>Pas de commentaire trouvé.</p></div>
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade adminTable" id="approvedComments">
+            {% if approvedComments %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Identifiant</th>
+                            <th>Article</th>
+                            <th>Auteur</th>
+                            <th>Contenu</th>
+                            <th></th>  <!-- Actions column -->
+                        </tr>
+                        </thead>
+                        {% for approvedComment in approvedComments %}
+                            {% if approvedComment.published == 1%}
+                            <tr class="success" id="tr{{ approvedComment.id }}">
+                            {% else %}
+                                <tr id="tr{{ approvedComment.id }}">
+                            {% endif %}
+
+                            <td>{{ approvedComment.id }}</td>
+                            <td><a class="articleTitle" href="{{ path('article', { 'id': approvedComment.article.id }) }}">{{ approvedComment.article.title }}</a></td>
+                            <td>{{ approvedComment.author.username }}</td>
+                            <td>{{ approvedComment.content | truncate(60) }}</td>
+                            <td>
+                                <a href="{{ path('admin_comment_edit', { 'id': approvedComment.id }) }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#approvedCommentDialog{{ approvedComment.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <div class="modal fade" id="approvedCommentDialog{{ approvedComment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                Confirmez la suppression du commentaire
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                <a href="{{ path('admin_comment_delete', { 'id': approvedComment.id }) }}" class="btn btn-danger">Confirmer</a>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </td>
                             </tr>
                         {% endfor %}
                     </table>

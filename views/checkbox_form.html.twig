@@ -4,13 +4,18 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="well">
-    {{ form_start(checkboxForm) }}
+    <div class="well">
+        {{ form_start(moderationForm) }}
         <div class="form-group">
-            {{ form_label(checkboxForm.name, 'Modérer') }}
-            {{ form_errors(checkboxForm.content) }}
-            {{ form_widgetl(checkboxForm.content) }}
+            {{ form_label(moderationForm.published) }}
+            {{ form_errors(moderationForm.published) }}
+            {{ form_widget(moderationForm.published) }}
         </div>
-    {{ form_end(checkboxForm) }}
-</div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-3">
+                <input type="submit"  class="btn btn-primary" value="moderer" />
+            </div>
+        </div>
+        {{ form_end(moderationForm) }}
+    </div>
 {% endblock %}

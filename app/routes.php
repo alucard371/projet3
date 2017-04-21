@@ -4,10 +4,6 @@
 $app->get('/', "MicroCMS\Controller\HomeController::indexAction")
     ->bind('home');
 
-// Home page
-$app->get('/', "MicroCMS\Controller\HomeController::indexAction")
-    ->bind('home');
-
 // Detailed info about an article
 $app->match('/article/{id}', "MicroCMS\Controller\HomeController::articleAction")
     ->bind('article');
@@ -15,6 +11,15 @@ $app->match('/article/{id}', "MicroCMS\Controller\HomeController::articleAction"
 // Detailed info about an comment
 $app->match('/article/{articleId}/comment/{commentId}', "MicroCMS\Controller\HomeController::commentAction")
     ->bind('comment');
+
+// Moderate comment
+$app->match('/article/{articleId}/comment/{commentId}/moderation', "MicroCMS\Controller\HomeController::commentModerationAction")
+    ->bind('moderation');
+
+// Accept comment
+$app->match('/article/comment/{commentId}/accept', "MicroCMS\Controller\HomeController::commentAcceptationAction")
+    ->bind('accept');
+
 // Login form
 $app->get('/login', "MicroCMS\Controller\HomeController::loginAction")
     ->bind('login');

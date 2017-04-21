@@ -2,6 +2,7 @@
 
 namespace MicroCMS\DAO;
 
+
 use MicroCMS\Domain\Comment;
 
 class CommentDAO extends DAO
@@ -15,16 +16,6 @@ class CommentDAO extends DAO
      * @var \MicroCMS\DAO\UserDAO
      */
     private $userDAO;
-
-    /**
-     * @var \MicroCMS\DAO\CommentDAO
-     */
-    private $commentDAO;
-
-    public function setComment(CommentDAO $commentDAO)
-    {
-        $this->commentDAO = $commentDAO;
-    }
 
     public function setArticleDAO(ArticleDAO $articleDAO) {
         $this->articleDAO = $articleDAO;
@@ -47,7 +38,7 @@ class CommentDAO extends DAO
 
         // art_id is not selected by the SQL query
         // The article won't be retrieved during domain objet construction
-        $sql = "select com_id, com_content, usr_id from t_comment where art_id=? order by com_id";
+        $sql = "select * from t_comment where art_id=? and par_id = 0 and published=1 order by com_id DESC ";
         $result = $this->getDb()->fetchAll($sql, array($articleId));
 
         // Convert query result to an array of domain objects
@@ -63,17 +54,17 @@ class CommentDAO extends DAO
     }
 
 
-    /**Return a list of all comments for a comment
-     * @param integer $commentId the comment id
-     * @return array
+    /**
+     * Return a list of all comments for an comment, sorted by date (most recent last).
+     *
+     * @param $commentId
+     * @return array A list of all comments for the comment.
      */
-    public function findAllByComment($commentId) {
-        // the associated comment is retrieved only once
-        $comment = $this->commentDAO->find($commentId);
+    public function findAllByCommentLast3($commentId) {
 
-        // art_id is not selected by the SQL query
-        // The article won't be retrieved during domain objet construction
-        $sql = "select com_id, com_content from t_comment where com_id=? order by com_id";
+        // com_id is not selected by the SQL query
+        // The comment won't be retrieved during domain objet construction
+        $sql = "select * from t_comment where par_id=? AND published=1 order by com_id DESC limit 3";
         $result = $this->getDb()->fetchAll($sql, array($commentId));
 
         // Convert query result to an array of domain objects
@@ -82,18 +73,54 @@ class CommentDAO extends DAO
             $comId = $row['com_id'];
             $comment = $this->buildDomainObject($row);
             // The associated comment is defined for the constructed comment
-            $comment->setComment($comment);
+
             $comments[$comId] = $comment;
         }
         return $comments;
     }
 
     /**
-     * @return array a list of all comments
+     * @return array a list of all approved comments
      */
     public function findAll()
     {
-        $sql = "select * from t_comment ORDER BY com_id DESC";
+        $sql = "select * from t_comment order by com_id DESC";
+        $result = $this->getDb()->fetchAll($sql);
+
+        //convert query to an array of domain objects
+        $entities = array();
+        foreach ($result as $row)
+        {
+            $id = $row['com_id'];
+            $entities[$id] = $this->buildDomainObject($row);
+        }
+        return $entities;
+    }
+
+    /**
+     * @return array a list of all approved comments
+     */
+    public function findApprovedComments()
+    {
+        $sql = "select * from t_comment where published=1 order by com_id DESC";
+        $result = $this->getDb()->fetchAll($sql);
+
+        //convert query to an array of domain objects
+        $entities = array();
+        foreach ($result as $row)
+        {
+            $id = $row['com_id'];
+            $entities[$id] = $this->buildDomainObject($row);
+        }
+        return $entities;
+    }
+
+    /**
+     * @return array a list of all comments in moderation
+     */
+    public function findModerateComments()
+    {
+        $sql = "select * from t_comment where published=0 order by com_id DESC";
         $result = $this->getDb()->fetchAll($sql);
 
         //convert query to an array of domain objects
@@ -127,54 +154,54 @@ class CommentDAO extends DAO
         }
     }
 
-    public function moderateComments(Comment $comment)
+    public function moderate($id)
     {
+        //update the comment moderation status
+        $this->getDb()->update('t_comment', array('published' => '0'),array('com_id' => $id));
+    }
 
-        if ($comment->getPublish === 1) {
-            /*show*/
+    public function accept($id)
+    {
+        //update the comment moderation status
+        $this->getDb()->update('t_comment', array('published' => '1'),array('com_id' => $id));
+    }
 
-        }
-        else
-        {
-            /*don't show*/
-
-        }
+    public function published($id)
+    {
+        //get publish state of comment
+        $sql = "select published from t_comment where com_id=?";
+        $this->getDb()->fetchAssoc($sql, array($id));
     }
 
     /**
      * @param Comment $comment
+     * @param $commentId
+     * @param $articleId
      */
-    public function saveNestedComment(Comment $comment) {
+    public function saveNestedComment(Comment $comment, $commentId, $articleId) {
 
-        if ($comment->getParentId() === null) {
-            $commentData = array(
-                'usr_id' => $comment->getAuthor()->getId(),
-                'art_id' => $comment->getArticle()->getId(),
-                'com_id' => $comment->getId(),
-                'com_content' => $comment->getContent()
-            );
+        $commentData = array(
+            'art_id' => $articleId,
+            'usr_id' => $comment->getAuthor()->getId(),
+            'com_content' => $comment->getContent(),
+            'par_id' => $commentId
+        );
+
             // The comment has never been saved : insert it
             $this->getDb()->insert('t_comment', $commentData);
             // Get the id of the newly created comment and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $comment->setId($id);
-            $comment->setParentId($id);
-        } else {
-            $commentData = array(
-                'children' => $comment->getParentId(),
-                'art_id' => $comment->getArticle()->getId(),
-                'com_content' => $comment->getContent()
-            );
-            // The comment has already been saved : update it
-            $this->getDb()->update('t_comment', $commentData, array('com_id' => $comment->getId()));
-        }
+            $comment->isPublished();
+            $comment->getParent();
+
     }
 
     /**
      * Returns a comment matching the supplied id.
      *
      * @param integer $id The comment id
-     * @return throws|Comment an exception if no matching comment is found
+     * @return \MicroCMS\Domain\Comment
      * @throws \Exception
      */
     public function find($id) {
@@ -187,18 +214,15 @@ class CommentDAO extends DAO
             throw new \Exception("No comment matching id " . $id);
     }
 
-    // ...
-
     /**
      * Removes a comment from the database.
      *
-     * @param @param integer $id The comment id
+     * @param integer $id The comment id
      */
     public function delete($id) {
         // Delete the comment
         $this->getDb()->delete('t_comment', array('com_id' => $id));
     }
-
 
     /**
      * Removes all comments
@@ -208,6 +232,16 @@ class CommentDAO extends DAO
     public function deleteAllByArticle($articleId)
     {
         $this->getDb()->delete('t_comment', array('art_id' => $articleId));
+    }
+
+    /**
+     * removes all comments attached to an article
+     *
+     * @param $commentId
+     */
+    public function deleteAllByComment($commentId)
+    {
+        $this->getDb()->delete('t_comment', array('par_id' => $commentId));
     }
 
     /**
