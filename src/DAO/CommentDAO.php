@@ -277,6 +277,12 @@ class CommentDAO extends DAO
             $user = $this->userDAO->find($userId);
             $comment->setAuthor($user);
         }
+        if (array_key_exists('par_id', $row)) {
+            $comment->setParent($row['par_id']);
+        }
+        if (array_key_exists('published', $row)) {
+            $comment->setPublished($row['published']);
+        }
 
         return $comment;
     }

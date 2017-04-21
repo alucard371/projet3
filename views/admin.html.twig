@@ -158,11 +158,6 @@
                         </tr>
                         </thead>
                         {% for approvedComment in approvedComments %}
-                            {% if approvedComment.published == 1%}
-                            <tr class="success" id="tr{{ approvedComment.id }}">
-                            {% else %}
-                                <tr id="tr{{ approvedComment.id }}">
-                            {% endif %}
 
                             <td>{{ approvedComment.id }}</td>
                             <td><a class="articleTitle" href="{{ path('article', { 'id': approvedComment.article.id }) }}">{{ approvedComment.article.title }}</a></td>

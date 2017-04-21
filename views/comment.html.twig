@@ -5,26 +5,14 @@
 {% block content %}
 
 
-    <p>
+    <h2>{{ comment.content }}</h2>
+    <h2>{{ comment.isPublished }}</h2>
+    <h4>{{ comment.author.username }}</h4>
 
-    <p>id de l'auteur de commentaire: {{ comment.author.id }}</p>
-    <p>login de l'auteur du commentaire: {{ comment.author.username }}</p>
-    <p>contenu du commentaire: {{ comment.content }}</p>
-    <p>id du commentaire: {{ comment.id }}</p>
-
-    <p>publié:
-        {% if comment.published is same as (true) %}
-            {{ 'publié' }}
-        {% else %}
-            {{ 'pas publié' }}
-        {% endif %}
-    </p>
-    <p>id du commentaire parent : {{ comment.parent }}</p>
-    <p>id de l'article lié au commentaire: {{ comment.article.id }}</p>
 
     <h3>Commentaires</h3>
 
-    <div id="parent">
+    <div>
         {% for comment in comments %}
             <div class="child" id="{{ comment.id }}">
                 <button type="button" class="btn btn-warning " title="Moderate" data-toggle="modal" data-target="#moderateDialog{{ comment.id }}">Signaler</span>

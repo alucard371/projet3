@@ -106,9 +106,6 @@ class HomeController
                 $app['dao.comment']->saveNestedComment($comment, $commentId, $articleId);
                 $app['session']->getFlashBag()->add('success', 'Votre commentaire à bien été ajouté');
                 return $app->redirect($app['url_generator']->generate('comment', array('articleId'=>$articleId, 'commentId'=>$commentId)));
-
-
-
             }
             $commentFormView = $commentForm->createView();
         }
@@ -119,9 +116,7 @@ class HomeController
             'comments' => $comments,
             'comment' => $formerComment,
             'commentForm' => $commentFormView));
-
     }
-
 
     /**
      * Comment moderation controller
@@ -133,8 +128,7 @@ class HomeController
     {
         $comment = $app['dao.comment'];
         $comment->moderate($commentId);
-
-        $app['session']->getFlashBag()->add('error', 'La demande est  éffectuée');
+        $app['session']->getFlashBag()->add('error', 'La demande est  effectuée');
         return $app->redirect('/');
     }
 
@@ -147,8 +141,7 @@ class HomeController
     public function commentAcceptationAction($commentId, Application $app)
     {
         $app['dao.comment']->accept($commentId);
-        $app['session']->getFlashBag()->add('success', 'La commentaire est modéré.');
+        $app['session']->getFlashBag()->add('success', 'Le commentaire est modéré.');
         return $app->redirect($app['url_generator']->generate('admin'));
-
     }
 }

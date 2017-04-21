@@ -12,7 +12,6 @@
     <h3>Commentaires</h3>
     <div>
     {% for comment in comments %}
-        {% if not comment.published %}
         <div class="parent" id="{{ comment.id }}">
             <button type="button" class="btn btn-warning " title="Moderate" data-toggle="modal" data-target="#moderateDialog{{ comment.id }}">Signaler</span>
             </button>
@@ -35,10 +34,8 @@
             </div><!-- /.modal -->
             <button class="btn btn-default "><a  href="{{ path('comment', {'articleId': article.id, 'commentId': comment.id}) }}">{{ comment.author.username }}</a></button> dit : {{ comment.content }}
             <br>
-
             <p class="divider"></p>
         </div>
-        {% endif %}
     {% else %}
         Pas de commentaires
     {% endfor %}
