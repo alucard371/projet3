@@ -1,0 +1,91 @@
+<!-- jQuery -->
+<script type="text/javascript" src={{ asset('lib/tinymce/tinymce.min.js') }}></script>.
+<script type="text/javascript">
+    tinymce.init({
+        forced_root_block : "",
+        selector: 'textarea',
+        language: 'fr_FR',
+        statusbar: false,
+        menu: {
+            file: {title: 'File', items: 'newdocument'},
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+            insert: {title: 'Insert', items: 'link media | template hr'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+            tools: {title: 'Tools', items: 'spellchecker code'}},
+        toolbar: false
+    });
+</script>
+<script type="text/javascript">
+    tinyMCE.init({
+        forced_root_block : "",
+        language: 'fr_FR',
+        selector: 'input#article_title',
+        toolbar: false,
+        statusbar: false,
+        menu: {
+            file: {title: 'File', items: 'newdocument'},
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+            insert: {title: 'Insert', items: 'link media | template hr'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+            tools: {title: 'Tools', items: 'spellchecker code'}}
+    });
+
+</script>
+<script type="text/javascript">
+
+    function reset() {
+        for (var i = 0;i < tinyMCE.editors.length; i++) {
+            var instances = tinyMCE.editors[i];
+            var target = instances.targetElm;
+            var hasClass = $(target).hasClass("reset");
+            if (hasClass) {
+                instances.setContent('');
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+
+    $('.publish').click(function(e) {
+        for (var i = 0;i < tinyMCE.editors.length; i++) {
+            if (tinyMCE.activeEditor.getContent() === '') {
+                $("#comment_content").attr('required','');
+                alert ("remplissez le champ");
+                e.preventDefault();
+            }
+            else if (tinyMCE.activeEditor.getContent() !== ''){
+                $("#comment_content").removeAttr('required','');
+            }
+        }
+
+    });
+</script>
+<script type="text/javascript">
+    /*toggle comment form*/
+    $("#commentForm").css('display','none');
+    $( "#show" ).click(function() {
+        $( "#commentForm" ).toggle("fade");
+    });
+</script>
+<script>
+    /*clean forms on load*/
+    window.addEventListener("load", function (event) {
+        tinyMCE.activeEditor.setContent('');
+    });
+</script>
+<script>
+    var pixels = 0;
+
+    $('.child').each(function(){
+        $(this).css('margin-left', pixels + 'px');
+        pixels += 30
+    })
+</script>
+
+
+<!-- JavaScript Boostrap plugin -->
+<script src="{{ asset('/lib/bootstrap/js/bootstrap.js') }}"></script>
