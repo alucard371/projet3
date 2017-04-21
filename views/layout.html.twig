@@ -126,9 +126,16 @@
 <script>
     /*clean forms on load*/
    window.addEventListener("load", function (event) {
-       console.log("hello");
        tinyMCE.activeEditor.setContent('');
    });
+</script>
+<script>
+        var pixels = 0;
+
+        $('.child').each(function(){
+                $(this).css('margin-left', pixels + 'px');
+                pixels += 30
+        })
 </script>
 
 

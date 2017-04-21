@@ -24,9 +24,9 @@
 
     <h3>Commentaires</h3>
 
-    <div>
+    <div id="parent">
         {% for comment in comments %}
-            <div class="parent" id="{{ comment.id }}">
+            <div class="child" id="{{ comment.id }}">
                 <button type="button" class="btn btn-warning " title="Moderate" data-toggle="modal" data-target="#moderateDialog{{ comment.id }}">Signaler</span>
                 </button>
                 <div class="modal fade" id="moderateDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
