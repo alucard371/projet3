@@ -3,6 +3,9 @@
 {% block stylesheets %}
     {{ include('stylesheets.html.twig') }}
 {% endblock %}
+
+<title>Mon cms - {% block title %}{% endblock %}</title>
+
 <body>
 <div class="container">
 
@@ -10,8 +13,8 @@
     {{ include('nav.html.twig') }}
     {% endblock %}
 
-
     <div id="content">{% block content %}{% endblock %}</div>
+
 </div>
 {% block javascripts %}
         {{ include('javascript.html.twig') }}

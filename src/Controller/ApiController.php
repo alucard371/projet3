@@ -52,10 +52,10 @@ class ApiController {
     public function addArticleAction(Request $request, Application $app) {
         // Check request parameters
         if (!$request->request->has('title')) {
-            return $app->json('Missing required parameter: title', 400);
+            return $app->json('Le paramètre title est manquant', 400);
         }
         if (!$request->request->has('content')) {
-            return $app->json('Missing required parameter: content', 400);
+            return $app->json('Le paramètre content est manquant', 400);
         }
         // Build and save the new article
         $article = new Article();
@@ -71,6 +71,7 @@ class ApiController {
      *
      * @param integer $id Article id
      * @param Application $app Silex application
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteArticleAction($id, Application $app) {
         // Delete all associated comments
