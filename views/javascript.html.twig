@@ -1,5 +1,6 @@
 <!-- jQuery -->
 <script type="text/javascript" src={{ asset('lib/tinymce/tinymce.min.js') }}></script>.
+<script src="{{ asset('/lib/bootstrap/js/bootstrap.js') }}"></script>
 <script type="text/javascript">
     tinymce.init({
         forced_root_block : "",
@@ -16,8 +17,7 @@
             tools: {title: 'Tools', items: 'spellchecker code'}},
         toolbar: false
     });
-</script>
-<script type="text/javascript">
+
     tinyMCE.init({
         forced_root_block : "",
         language: 'fr_FR',
@@ -34,9 +34,7 @@
             tools: {title: 'Tools', items: 'spellchecker code'}}
     });
 
-</script>
-<script type="text/javascript">
-
+    //prevent empty article form
     $('.publish').click(function(e) {
         for (var i = 0;i < tinyMCE.editors.length; i++) {
             if (tinyMCE.activeEditor.getContent() === '') {
@@ -50,8 +48,8 @@
         }
 
     });
-</script>
-<script>
+
+    //show comments on comment page
         var pixels = 0
 
     $('.childComment').each(function (index)
@@ -61,12 +59,10 @@
         console.log(index);
         console.log(parent);
     });
-</script>
-<script type="text/javascript">
+
     /*toggle comment form*/
     $("#commentForm").css('display','none');
     $( "#show" ).click(function() {
         $( "#commentForm" ).toggle("fade");
     });
 </script>
-<script src="{{ asset('/lib/bootstrap/js/bootstrap.js') }}"></script>
