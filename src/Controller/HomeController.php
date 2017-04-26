@@ -35,9 +35,11 @@ class HomeController
      * @param Application $app Silex application
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function articleAction($id, Request $request, Application $app)
+    public function articleAction( $id, Request $request, Application $app)
     {
+
         $article = $app['dao.article']->find($id);
+
         $commentFormView = null;
         if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
             // A user is fully authenticated : he can add comments
@@ -60,6 +62,9 @@ class HomeController
 
         }
         $comments = $app['dao.comment']->findAllByArticle($id);
+
+
+
         return $app['twig']->render('article.html.twig', array(
             'article' => $article,
             'comments' => $comments,

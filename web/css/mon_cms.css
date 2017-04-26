@@ -31,3 +31,18 @@ body
     height: 60px;
 }
 
+.child
+{
+    padding-left: 10px;
+}
+
+.child1
+{
+    padding-left: 20px;
+}
+
+.child2
+{
+    padding-left: 30px;
+}
+

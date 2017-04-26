@@ -24,7 +24,7 @@
             <div class="col-sm-6">
                 {{ form_errors(commentForm.content) }}
                 {{ form_widget(commentForm.content, { 'attr':  {
-                    'class': 'form-control reset',
+                    'class': 'form-control',
                     'rows': '4'
                 }}) }}
             </div>
@@ -32,7 +32,6 @@
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-3">
                 <input type="submit"  class="btn btn-primary publish" value="Sauvegarder" />
-                <button onclick="reset();" type="button" class="btn btn-warning">Reset</button>
             </div>
         </div>
         {{ form_end(commentForm) }}

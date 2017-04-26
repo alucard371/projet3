@@ -24,7 +24,7 @@
             <div class="col-sm-6">
                 {{ form_errors(articleForm.title) }}
                 {{ form_widget(articleForm.title|escape('html'), { 'attr':  {
-                    'class': 'form-control reset',
+                    'class': 'form-control ',
                     'name': 'test'
                 }}) }}
             </div>
@@ -36,15 +36,14 @@
             <div class="col-sm-6">
                 {{ form_errors(articleForm.content) }}
                 {{ form_widget(articleForm.content, { 'attr':  {
-                    'class': 'form-control reset',
+                    'class': 'form-control tinyMce',
                     'rows': '8'
                 }}) }}
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-3">
-                <input type="submit"  class="btn btn-success publish" value="validate" />
-                <button onclick="reset();" type="button" class="btn btn-warning">Initialiser</button>
+                <input type="submit"  class="btn btn-success publish" value="Valider" />
             </div>
         </div>
         {{ form_end(articleForm) }}

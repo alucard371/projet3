@@ -2,7 +2,6 @@
 
 namespace MicroCMS\DAO;
 
-
 use MicroCMS\Domain\Comment;
 
 class CommentDAO extends DAO
@@ -38,7 +37,7 @@ class CommentDAO extends DAO
 
         // art_id is not selected by the SQL query
         // The article won't be retrieved during domain objet construction
-        $sql = "select * from t_comment where art_id=? and par_id = 0 and published=1 order by com_id DESC ";
+        $sql = "select * from t_comment where art_id=? and published=1 order by com_id DESC ";
         $result = $this->getDb()->fetchAll($sql, array($articleId));
 
         // Convert query result to an array of domain objects
@@ -51,6 +50,27 @@ class CommentDAO extends DAO
             $comments[$comId] = $comment;
         }
         return $comments;
+    }
+
+    public function findNestedByArticle ($articleId)
+    {
+        //retrieve associated article
+        $article = $this->articleDAO->find($articleId);
+
+        $sql = "SELECT * FROM `t_comment` WHERE `art_id`=? and (`par_id` == `com_id`)AND published=1 ORDER BY com_id DESC  LIMIT 4 ";
+        $result = $this->getDb()->fetchAll($sql, array($articleId));
+
+        $nestedComments = array();
+
+        foreach ($result as $row)
+        {
+            $comId = $row['com_id'];
+            $nestedComment = $this->buildDomainObject($row);
+            // The associated article is defined for the constructed comment
+            $nestedComment->setArticle($article);
+            $nestedComments[$comId] = $nestedComment;
+        }
+        return $nestedComments;
     }
 
 

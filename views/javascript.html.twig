@@ -3,7 +3,7 @@
 <script type="text/javascript">
     tinymce.init({
         forced_root_block : "",
-        selector: 'textarea',
+        selector: 'textarea.tinyMce',
         language: 'fr_FR',
         statusbar: false,
         menu: {
@@ -37,19 +37,6 @@
 </script>
 <script type="text/javascript">
 
-    function reset() {
-        for (var i = 0;i < tinyMCE.editors.length; i++) {
-            var instances = tinyMCE.editors[i];
-            var target = instances.targetElm;
-            var hasClass = $(target).hasClass("reset");
-            if (hasClass) {
-                instances.setContent('');
-            }
-        }
-    }
-</script>
-<script type="text/javascript">
-
     $('.publish').click(function(e) {
         for (var i = 0;i < tinyMCE.editors.length; i++) {
             if (tinyMCE.activeEditor.getContent() === '') {
@@ -64,6 +51,17 @@
 
     });
 </script>
+<script>
+        var pixels = 0
+
+    $('.childComment').each(function (index)
+    {
+        $(this).css('margin-left', pixels + 'px');
+        pixels += 10;
+        console.log(index);
+        console.log(parent);
+    });
+</script>
 <script type="text/javascript">
     /*toggle comment form*/
     $("#commentForm").css('display','none');
@@ -71,15 +69,4 @@
         $( "#commentForm" ).toggle("fade");
     });
 </script>
-<script>
-    var pixels = 0;
-
-    $('.child').each(function(){
-        $(this).css('margin-left', pixels + 'px');
-        pixels += 30
-    })
-</script>
-
-
-<!-- JavaScript Boostrap plugin -->
 <script src="{{ asset('/lib/bootstrap/js/bootstrap.js') }}"></script>

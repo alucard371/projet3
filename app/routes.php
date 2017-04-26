@@ -17,7 +17,7 @@ $app->match('/article/{articleId}/comment/{commentId}/moderation', "MicroCMS\Con
     ->bind('moderation');
 
 // Accept comment
-$app->match('/article/comment/{commentId}/accept', "MicroCMS\Controller\HomeController::commentAcceptationAction")
+$app->match('/article/comment/{commentId}/acceptez', "MicroCMS\Controller\HomeController::commentAcceptationAction")
     ->bind('accept');
 
 // Login form
@@ -29,35 +29,35 @@ $app->get('/admin', "MicroCMS\Controller\AdminController::indexAction")
     ->bind('admin');
 
 // Add a new article
-$app->match('/admin/article/add', "MicroCMS\Controller\AdminController::addArticleAction")
+$app->match('/admin/article/ajouter', "MicroCMS\Controller\AdminController::addArticleAction")
     ->bind('admin_article_add');
 
 // Edit an existing article
-$app->match('/admin/article/{id}/edit', "MicroCMS\Controller\AdminController::editArticleAction")
+$app->match('/admin/article/{id}/editez', "MicroCMS\Controller\AdminController::editArticleAction")
     ->bind('admin_article_edit');
 
 // Remove an article
-$app->get('/admin/article/{id}/delete', "MicroCMS\Controller\AdminController::deleteArticleAction")
+$app->get('/admin/article/{id}/supprimer', "MicroCMS\Controller\AdminController::deleteArticleAction")
     ->bind('admin_article_delete');
 
 // Edit an existing comment
-$app->match('/admin/comment/{id}/edit', "MicroCMS\Controller\AdminController::editCommentAction")
+$app->match('/admin/comment/{id}/editez', "MicroCMS\Controller\AdminController::editCommentAction")
     ->bind('admin_comment_edit');
 
 // Remove a comment
-$app->get('/admin/comment/{id}/delete', "MicroCMS\Controller\AdminController::deleteCommentAction")
+$app->get('/admin/comment/{id}/supprimer', "MicroCMS\Controller\AdminController::deleteCommentAction")
     ->bind('admin_comment_delete');
 
 // Add a user
-$app->match('/admin/user/add', "MicroCMS\Controller\AdminController::addUserAction")
+$app->match('/admin/user/ajouter', "MicroCMS\Controller\AdminController::addUserAction")
     ->bind('admin_user_add');
 
 // Edit an existing user
-$app->match('/admin/user/{id}/edit', "MicroCMS\Controller\AdminController::editUserAction")
+$app->match('/admin/user/{id}/editez', "MicroCMS\Controller\AdminController::editUserAction")
     ->bind('admin_user_edit');
 
 // Remove a user
-$app->get('/admin/user/{id}/delete', "MicroCMS\Controller\AdminController::deleteUserAction")
+$app->get('/admin/user/{id}/supprimer', "MicroCMS\Controller\AdminController::deleteUserAction")
     ->bind('admin_user_delete');
 
 // API : get all articles

@@ -21,7 +21,7 @@ create table t_comment (
     com_content varchar(500) not null,
     art_id integer not null,
     usr_id integer not null,
-    par_id INTEGER not NULL,
+    par_id integer not NULL,
     published BOOLEAN DEFAULT '1' NOT NULL ,
     constraint fk_com_art foreign key(art_id) references t_article(art_id),
     constraint fk_com_usr foreign key(usr_id) references t_user(usr_id)
