@@ -186,13 +186,6 @@ class CommentDAO extends DAO
         $this->getDb()->update('t_comment', array('published' => '1'),array('com_id' => $id));
     }
 
-    public function published($id)
-    {
-        //get publish state of comment
-        $sql = "select published from t_comment where com_id=?";
-        $this->getDb()->fetchAssoc($sql, array($id));
-    }
-
     /**
      * @param Comment $comment
      * @param $commentId
