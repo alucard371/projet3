@@ -17,7 +17,7 @@ $app->match('/article/{articleId}/comment/{commentId}/moderation', "MicroCMS\Con
     ->bind('moderation');
 
 // Accept comment
-$app->match('/article/comment/{commentId}/acceptez', "MicroCMS\Controller\HomeController::commentAcceptationAction")
+$app->match('/article/comment/{commentId}/accepter', "MicroCMS\Controller\HomeController::commentAcceptationAction")
     ->bind('accept');
 
 // Login form
@@ -33,7 +33,7 @@ $app->match('/admin/article/ajouter', "MicroCMS\Controller\AdminController::addA
     ->bind('admin_article_add');
 
 // Edit an existing article
-$app->match('/admin/article/{id}/editez', "MicroCMS\Controller\AdminController::editArticleAction")
+$app->match('/admin/article/{id}/editer', "MicroCMS\Controller\AdminController::editArticleAction")
     ->bind('admin_article_edit');
 
 // Remove an article
@@ -41,7 +41,7 @@ $app->get('/admin/article/{id}/supprimer', "MicroCMS\Controller\AdminController:
     ->bind('admin_article_delete');
 
 // Edit an existing comment
-$app->match('/admin/comment/{id}/editez', "MicroCMS\Controller\AdminController::editCommentAction")
+$app->match('/admin/comment/{id}/editer', "MicroCMS\Controller\AdminController::editCommentAction")
     ->bind('admin_comment_edit');
 
 // Remove a comment
@@ -59,19 +59,3 @@ $app->match('/admin/user/{id}/editez', "MicroCMS\Controller\AdminController::edi
 // Remove a user
 $app->get('/admin/user/{id}/supprimer', "MicroCMS\Controller\AdminController::deleteUserAction")
     ->bind('admin_user_delete');
-
-// API : get all articles
-$app->get('/api/articles', "MicroCMS\Controller\ApiController::getArticlesAction")
-    ->bind('api_articles');
-
-// API : get an article
-$app->get('/api/article/{id}', "MicroCMS\Controller\ApiController::getArticleAction")
-    ->bind('api_article');
-
-// API : create an article
-$app->post('/api/article', "MicroCMS\Controller\ApiController::addArticleAction")
-    ->bind('api_article_add');
-
-// API : remove an article
-$app->delete('/api/article/{id}', "MicroCMS\Controller\ApiController::deleteArticleAction")
-    ->bind('api_article_delete');

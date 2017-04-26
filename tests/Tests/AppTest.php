@@ -54,15 +54,20 @@ class AppTest extends WebTestCase
         return array(
             array('/'),
             array('/article/1'),
+            array('/article/1/comment/1'),
+            array('/article/1/comment/1/moderation'),
+            array('/article/1/comment/1/accepter'),
             array('/login'),
             array('/admin'),
-            array('/admin/article/add'),
-            array('/admin/article/1/edit'),
-            array('/admin/comment/1/edit'),
-            array('/admin/user/add'),
+            array('/admin/article/ajouter'),
+            array('/admin/article/1/editer'),
+            array('/admin/article/1/supprimer'),
+            array('/admin/comment/{id}/editer'),
+            array('/admin/comment/{id}/supprimer'),
+            array('/admin/comment/1/editer'),
+            array('/admin/user/ajouter'),
+            array('/admin/user/1/supprimer'),
             array('/admin/user/1/edit'),
-            array('/api/articles'),
-            array('/api/article/1')
         );
     }
 }
