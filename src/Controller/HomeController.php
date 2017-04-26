@@ -37,9 +37,7 @@ class HomeController
      */
     public function articleAction( $id, Request $request, Application $app)
     {
-
         $article = $app['dao.article']->find($id);
-
         $commentFormView = null;
         if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
             // A user is fully authenticated : he can add comments
@@ -50,27 +48,20 @@ class HomeController
             $commentForm = $app['form.factory']->create(CommentType::class, $comment);
             $commentForm->handleRequest($request);
 
-
                 if ($commentForm->isSubmitted() && $commentForm->isValid()) {
                 $app['dao.comment']->save($comment);
                 $app['session']->getFlashBag()->add('success', 'Votre commentaire à bien été ajouté');
                 return $app->redirect($request->getUri());
-
-
             }
             $commentFormView = $commentForm->createView();
-
         }
         $comments = $app['dao.comment']->findAllByArticle($id);
-
-
 
         return $app['twig']->render('article.html.twig', array(
             'article' => $article,
             'comments' => $comments,
             'commentForm' => $commentFormView
         ));
-
     }
 
 

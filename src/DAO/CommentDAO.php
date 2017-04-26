@@ -52,28 +52,6 @@ class CommentDAO extends DAO
         return $comments;
     }
 
-    public function findNestedByArticle ($articleId)
-    {
-        //retrieve associated article
-        $article = $this->articleDAO->find($articleId);
-
-        $sql = "SELECT * FROM `comment` WHERE `art_id`=? and (`par_id` == `com_id`)AND published=1 ORDER BY com_id DESC  LIMIT 4 ";
-        $result = $this->getDb()->fetchAll($sql, array($articleId));
-
-        $nestedComments = array();
-
-        foreach ($result as $row)
-        {
-            $comId = $row['com_id'];
-            $nestedComment = $this->buildDomainObject($row);
-            // The associated article is defined for the constructed comment
-            $nestedComment->setArticle($article);
-            $nestedComments[$comId] = $nestedComment;
-        }
-        return $nestedComments;
-    }
-
-
     /**
      * Return a list of all comments for an comment, sorted by date (most recent last).
      *
@@ -174,12 +152,18 @@ class CommentDAO extends DAO
         }
     }
 
+    /**
+     * @param $id comment id
+     */
     public function moderate($id)
     {
         //update the comment moderation status
         $this->getDb()->update('comment', array('published' => '0'),array('com_id' => $id));
     }
 
+    /**
+     * @param $id comment id
+     */
     public function accept($id)
     {
         //update the comment moderation status
