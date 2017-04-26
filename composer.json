@@ -1,6 +1,7 @@
 {
-  "name": "microCMS",
+  "name": "micro-cms",
   "version": "0.0.1",
+  "description": "projet 3",
 
   "require": {
     "silex/silex": "~2.0",
