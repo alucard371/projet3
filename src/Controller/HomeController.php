@@ -1,15 +1,15 @@
 <?php
 
-namespace MicroCMS\Controller;
+namespace Projet3\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use MicroCMS\Domain\Comment;
-use MicroCMS\Form\Type\CommentType;
+use Projet3\Domain\Comment;
+use Projet3\Form\Type\CommentType;
 
 /**
  * Class HomeController
- * @package microCMS\Controller
+ * @package Projet3\Controller
  */
 class HomeController
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace microCMS\Controller;
+namespace Projet3\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use MicroCMS\Domain\Article;
-use MicroCMS\Domain\User;
-use MicroCMS\Form\Type\ArticleType;
-use MicroCMS\Form\Type\CommentType;
-use MicroCMS\Form\Type\UserType;
+use Projet3\Domain\Article;
+use Projet3\Domain\User;
+use Projet3\Form\Type\ArticleType;
+use Projet3\Form\Type\CommentType;
+use Projet3\Form\Type\UserType;
 
 class AdminController {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace MicroCMS\DAO;
+namespace Projet3\DAO;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use MicroCMS\Domain\User;
+use Projet3\Domain\User;
 
 
 class UserDAO extends DAO implements UserProviderInterface
@@ -18,7 +18,7 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function find($id)
     {
-        $sql = "select * from t_user where usr_id=?";
+        $sql = "select * from user where usr_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -29,7 +29,7 @@ class UserDAO extends DAO implements UserProviderInterface
 
     public function findAll()
     {
-        $sql = "select * from t_user order by usr_role, usr_name";
+        $sql = "select * from user order by usr_role, usr_name";
         $result = $this->getDb()->fetchAll($sql);
 
         //Convert query results to an array of objects
@@ -56,10 +56,10 @@ class UserDAO extends DAO implements UserProviderInterface
         );
         if ($user->getId()) {
             // The user has already been saved : update it
-            $this->getDb()->update('t_user', $userData, array('usr_id' => $user->getId()));
+            $this->getDb()->update('user', $userData, array('usr_id' => $user->getId()));
         } else {
             // The user has never been saved : insert it
-            $this->getDb()->insert('t_user', $userData);
+            $this->getDb()->insert('user', $userData);
             // Get the id of the newly created user and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $user->setId($id);
@@ -73,7 +73,7 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function delete($id) {
         // Delete the user
-        $this->getDb()->delete('t_user', array('usr_id' => $id));
+        $this->getDb()->delete('user', array('usr_id' => $id));
     }
 
     /**
@@ -81,7 +81,7 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $sql = "select * from t_user where usr_name=?";
+        $sql = "select * from user where usr_name=?";
         $row = $this->getDb()->fetchAssoc($sql, array($username));
         if ($row)
             return $this->buildDomainObject($row);
@@ -104,13 +104,13 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return 'MicroCMS\Domain\User' === $class;
+        return 'Projet3\Domain\User' === $class;
     }
     /**
      * Creates a User object based on a DB row.
      *
      * @param array $row The DB row containing User data.
-     * @return \MicroCMS\Domain\User
+     * @return \Projet3\Domain\User
      */
     protected function buildDomainObject(array $row) {
         $user = new User();

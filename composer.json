@@ -1,5 +1,5 @@
 {
-  "name": "micro-cms",
+  "name": "Projet3",
   "version": "0.0.1",
   "description": "projet 3",
 
@@ -24,7 +24,7 @@
     "symfony/css-selector": "~2.8|3.0.*"
   },
   "autoload": {
-    "psr-4": {"MicroCMS\\": "src"}
+    "psr-4": {"Projet3\\": "src"}
   }
   
 }

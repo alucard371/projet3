@@ -6,7 +6,7 @@
  * Time: 13:53
  */
 
-namespace MicroCMS\Form\Type;
+namespace Projet3\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

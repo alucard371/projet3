@@ -6,7 +6,7 @@
  * Time: 14:13
  */
 
-namespace MicroCMS\Domain;
+namespace Projet3\Domain;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 

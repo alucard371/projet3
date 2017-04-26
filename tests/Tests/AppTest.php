@@ -1,6 +1,6 @@
 <?php
 
-namespace microCMS\Tests;
+namespace Projet3\Tests;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 

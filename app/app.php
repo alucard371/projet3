@@ -34,7 +34,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'logout' => true,
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => function () use ($app) {
-                return new MicroCMS\DAO\UserDAO($app['db']);
+                return new Projet3\DAO\UserDAO($app['db']);
             },
         ),
     ),
@@ -50,8 +50,8 @@ $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile'   => __DIR__.'/../var/logs/microcms.log',
-    'monolog.name'      => 'microCMS',
+    'monolog.logfile'   => __DIR__.'/../var/logs/projet3.log',
+    'monolog.name'      => 'projet3',
     'monolog.level'     => $app['monolog.level']
 ));
 
@@ -72,13 +72,13 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
 
 // Register services
 $app['dao.article'] = function ($app) {
-    return new MicroCMS\DAO\ArticleDAO($app['db']);
+    return new Projet3\DAO\ArticleDAO($app['db']);
 };
 $app['dao.user'] = function ($app) {
-    return new MicroCMS\DAO\UserDAO($app['db']);
+    return new Projet3\DAO\UserDAO($app['db']);
 };
 $app['dao.comment'] = function ($app) {
-    $commentDAO = new MicroCMS\DAO\CommentDAO($app['db']);
+    $commentDAO = new Projet3\DAO\CommentDAO($app['db']);
     $commentDAO->setArticleDAO($app['dao.article']);
     $commentDAO->setUserDAO($app['dao.user']);
     return $commentDAO;

@@ -6,7 +6,7 @@
  * Time: 14:42
  */
 
-namespace MicroCMS\Domain;
+namespace Projet3\Domain;
 
 class Comment
 {
@@ -20,14 +20,14 @@ class Comment
     /**
      * Comment author
      *
-     * @var \MicroCMS\Domain\User
+     * @var \Projet3\Domain\User
      */
     private $author;
 
     /**
      * Associated article
      *
-     * @var \MicroCMS\Domain\Article
+     * @var \Projet3\Domain\Article
      */
     private $article;
 
